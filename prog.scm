@@ -1,5 +1,7 @@
-(define (xxx a b)
-    (+ a b))
+(define (fact n)
+	(if (eq? n 1)
+		1
+		(* n fact((+ n 1)))))
 
-
-(xxx 1 2)
+(define (main)
+	(fact 7))
