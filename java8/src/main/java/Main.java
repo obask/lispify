@@ -1,70 +1,24 @@
-package io.github.obask;
+import ast.ABranch;
+import ast.AString;
+import ast.ATree;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
 
-    static final Path path = Paths.get("/Users/obaskakov/IdeaProjects/lisbon/prog.scm");
+    private static final Path path = Paths.get("/Users/oleg/IdeaProjects/lispify/src/main/resources/example.scm");
 
-    static final String L_PAREN = "(";
-    static final String R_PAREN = ")";
-
-
-    abstract class ATree {
-
-    }
-
-    class ABranch extends ATree {
-        final List<ATree> value;
-        ABranch(List<ATree> val) {
-            value = val;
-        }
-
-        @Override
-        public String toString() {
-            final StringBuilder xx = new StringBuilder();
-            xx.append("[");
-            for (ATree x : value) {
-                xx.append(x);
-                xx.append(" ");
-            }
-            xx.append("]");
-            return xx.toString();
-        }
-    }
-
-
-    abstract class ALeaf extends ATree {
-
-    }
-
-
-    class AString extends ALeaf {
-        final String value;
-        AString(String val) {
-            value = val;
-        }
-
-        @Override
-        public String toString() {
-            return value;
-        }
-
-    }
-
-    class ANumber extends ALeaf {
-        final double value;
-        ANumber(double val) {
-            value = val;
-        }
-    }
-
+    private static final String L_PAREN = "(";
+    private static final String R_PAREN = ")";
 
     public ATree reduceTree(Iterator<String> tokens, final List<ATree> state) {
         if (tokens.hasNext()) {
@@ -90,10 +44,8 @@ public class Main {
         }
     }
 
-
     // TODO replace to splitAsStream method
     // Pattern.compile("\\W").splitAsStream("Some sentence");
-
     public static Stream<String> splitMeAsStream(String input, final char ch) {
         final char value[] = input.toCharArray();
 
@@ -109,7 +61,7 @@ public class Main {
         }
         // If no match was found, return this
         if (off == 0) {
-            return Collections.singletonList(input).stream();
+            return Stream.of(input);
         }
         // Add remaining segment
         list.add(input.substring(off, value.length));
@@ -117,9 +69,9 @@ public class Main {
         return list.stream();
     }
 
-    
+
     public static void main(String[] args) {
-	// write your code here
+        // write your code here
         try {
             final Stream<String> stream0 = Files.lines(path);
             Stream<String> stream1 = stream0.map(ss -> ss.split(" ")).flatMap(Arrays::stream);
@@ -136,7 +88,7 @@ public class Main {
 
             while (stringIterator.hasNext()) {
                 final String next = stringIterator.next();
-                assert(next.equals(L_PAREN));
+                assert (next.equals(L_PAREN));
                 final ATree aTree = app.reduceTree(stringIterator, new ArrayList<>());
                 System.out.println(aTree);
                 System.out.println("----");
