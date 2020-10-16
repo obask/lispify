@@ -42,7 +42,7 @@ class ALeaf {
 
 function makeAST(tokens: Array<string>, state: Array<CodeTree>): [CodeTree, Array<string>] {
     if (tokens.length == 0) {
-        return [new ABranch(state.reverse()), []]
+        return [new ABranch(state), []]
     }
     let head = tokens[0]
     let tail = tokens.slice(1)
@@ -85,17 +85,6 @@ function print(something) {
 }
 
 function main() {
-
-
-    // let data = new ABranch([new ABranch([new ALeaf("dsad"), new ALeaf("1234")])])
-    // let data = new ABranch([new ALeaf("dsad"), new ALeaf("1234")])
-
-    // let data = new ATMP([new ATMP(["dsad"])])
-    // console.log(data.value.map(x => x.toString()).join("^"))
-    // console.log(data.toString())
-    // console.log(new ALeaf("dsad".toString())
-    // print(data)
-
 
     let tokens = myLispProgram
         .split("(").join(" ( ")
